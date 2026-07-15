@@ -1,87 +1,125 @@
-import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { authFirebase } from "../firebase";
+import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
+import { authFirebase } from "../firebase";
 
-function Login(){
+function Login() {
+const navigate = useNavigate();
 
-    const navigate = useNavigate();
+const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+} = useForm();
 
-    const {register,handleSubmit,formState:{errors}} = useForm();
+const iniciarSesion = async (data) => {
+    try {
+    await signInWithEmailAndPassword(
+        authFirebase,
+        data.email,
+        data.password
+    );
 
-    const iniciarSesion = async(data)=>{
+    alert("Bienvenido a PoliTask");
 
-        try{
+    navigate("/dashboard", { replace: true });
+    } catch (error) {
+    console.error("Error al iniciar sesión:", error);
 
-            await signInWithEmailAndPassword(
-                authFirebase,
-                data.email,
-                data.password
-            );
+    let mensaje = "No se pudo iniciar sesión.";
 
-            alert("Bienvenido");
-
-            // CAMBIO AQUÍ: Redirigimos al Dashboard en lugar de la Landing Page
-            navigate("/dashboard"); 
-
-        }catch(error){
-
-            alert(error.message);
-
-        }
-
+    if (
+        error.code === "auth/invalid-credential" ||
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/user-not-found"
+    ) {
+        mensaje = "El correo o la contraseña son incorrectos.";
+    } else if (error.code === "auth/invalid-email") {
+        mensaje = "El correo electrónico no es válido.";
+    } else if (error.code === "auth/too-many-requests") {
+        mensaje =
+        "Demasiados intentos. Espera unos minutos e inténtalo nuevamente.";
+    } else if (error.code === "auth/network-request-failed") {
+        mensaje = "Comprueba tu conexión a Internet.";
     }
 
-    return(
+    alert(mensaje);
+    }
+};
 
-        <main className="contenido-principal contenedor">
+return (
+    <main className="contenido-principal contenedor">
+    <h2 className="text-center">Iniciar sesión</h2>
 
-            <h2>Iniciar Sesión</h2>
+    <form
+        className="formulario"
+        onSubmit={handleSubmit(iniciarSesion)}
+    >
+        <fieldset>
+        <legend>Ingresa tus datos</legend>
 
-            <form className="formulario" onSubmit={handleSubmit(iniciarSesion)}>
+        <div className="campo">
+            <label htmlFor="email">Correo:</label>
 
-                <div className="campo">
-                    <label>Correo</label>
+            <input
+            id="email"
+            type="email"
+            placeholder="Ingresa tu correo"
+            {...register("email", {
+                required: "El correo es obligatorio",
+                pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Ingresa un correo válido",
+                },
+            })}
+            />
 
-                    <input
-                        type="email"
-                        placeholder="Ingresa tu correo"
-                        {...register("email", { required: true })}
-                    />
+            {errors.email && (
+            <span className="errors">
+                {errors.email.message}
+            </span>
+            )}
+        </div>
 
-                    {errors.email && (
-                        <span className="errors">Ingrese un correo</span>
-                    )}
-                </div>
+        <div className="campo">
+            <label htmlFor="password">Contraseña:</label>
 
-                <div className="campo">
-                    <label>Contraseña</label>
+            <input
+            id="password"
+            type="password"
+            placeholder="Ingresa tu contraseña"
+            {...register("password", {
+                required: "La contraseña es obligatoria",
+                minLength: {
+                value: 6,
+                message:
+                    "La contraseña debe tener mínimo 6 caracteres",
+                },
+            })}
+            />
 
-                    <input
-                        type="password"
-                        placeholder="Ingresa tu contraseña"
-                        {...register("password", { required: true })}
-                    />
+            {errors.password && (
+            <span className="errors">
+                {errors.password.message}
+            </span>
+            )}
+        </div>
+        </fieldset>
 
-                    {errors.password && (
-                        <span className="errors">Ingrese la contraseña</span>
-                    )}
-                </div>
+        <button
+        className="btn"
+        type="submit"
+        disabled={isSubmitting}
+        >
+        {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
+        </button>
+    </form>
 
-                <button className="btn" type="submit">
-                    Iniciar sesión
-                </button>
-
-            </form>
-
-            <NavLink to="/register">
-                ¿No tienes cuenta? Regístrate
-            </NavLink>
-
-        </main>
-
-    )
-
+    <NavLink to="/register" className="enlace">
+        ¿No tienes cuenta? Regístrate aquí
+    </NavLink>
+    </main>
+);
 }
 
 export default Login;
