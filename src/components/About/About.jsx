@@ -12,7 +12,7 @@ function About() {
         <p>
             Somos una iniciativa de la comunidad de la Escuela
             Politécnica Nacional (la Poli) que impulsa la
-            colaboración entre estudiantes.
+            colaboración entre estudiantes en el ambito Enseñanza-Aprendizaje.
         </p>
         </div>
 
