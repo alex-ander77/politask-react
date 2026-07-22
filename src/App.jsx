@@ -51,6 +51,11 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} /> {/* 2. CREAMOS LA RUTA */}
+      <Route path="/nosotros" element={<AboutUs />} />
+      <Route path="/app" element={<AppPage />} />
+      <Route path="/contacto" element={<Contacto />} />
+      <Route path="/galeria" element={<Galeria />} />
+      <Route path="/recompensas" element={<Recompensas />} />
     </Routes>
   );
 }
