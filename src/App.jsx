@@ -9,6 +9,7 @@ import Gallery from "./components/Gallery/Gallery";
 import FAQ from "./components/FAQ/FAQ";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
+import Chatbot from "./components/Chatbot/Chatbot"; // Importación agregada
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -36,6 +37,9 @@ function Home() {
       <FAQ />
       <Contact />
       <Footer />
+
+
+      <Chatbot/> 
     </>
   );
 }
@@ -47,14 +51,6 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} /> {/* 2. CREAMOS LA RUTA */}
-      <Route path="/nosotros" element={<AboutUs />} />
-      <Route path="/app" element={<AppPage />} />
-      <Route path="/contacto" element={<Contacto />} />
-      <Route path="/galeria" element={<Galeria />} />
-      <Route path="/recompensas" element={<Recompensas />} />
-
-
-
     </Routes>
   );
 }

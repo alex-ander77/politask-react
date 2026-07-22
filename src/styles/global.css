@@ -671,23 +671,23 @@ h2 {
 }
 
 main.contenido-principal.contenedor {
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+min-height: 80vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 40px 20px;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Títulos del Login y Registro */
 main.contenido-principal h2, 
 main.contenido-principal h3.text-center {
   color: #1e3a8a; /* Azul institucional */
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
+font-size: 2rem;
+font-weight: 700;
+margin-bottom: 20px;
+text-align: center;
 }
 
 /* La tarjeta blanca del Formulario */
@@ -792,4 +792,60 @@ main.contenido-principal a:hover,
 main.contenido-principal .enlace:hover {
   color: #1d4ed8;
   text-decoration: underline;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: #64748b;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #cbd5e1;
+}
+
+.login-divider span {
+  white-space: nowrap;
+}
+
+.btn-google {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-google:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px
+    rgba(0, 0, 0, 0.12);
+}
+
+.google-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background-color: #4285f4;
+  font-weight: 700;
 }
