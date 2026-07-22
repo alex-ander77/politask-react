@@ -1,7 +1,13 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+    authFirebase,
+    googleProvider,
+} from "../firebase";
+import { signInWithEmailAndPassword,
+        signInWithPopup
+} from "firebase/auth";
+
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import { authFirebase } from "../firebase";
 
 function Login() {
 const navigate = useNavigate();
@@ -44,6 +50,45 @@ const iniciarSesion = async (data) => {
     }
 
     alert(mensaje);
+    }
+};
+const iniciarSesionConGoogle = async () => {
+    try {
+        await signInWithPopup(
+            authFirebase,
+            googleProvider
+    );
+
+        alert("Bienvenido a PoliTask");
+
+        navigate("/dashboard", { replace: true });
+    } catch (error) {
+        console.error(
+        "Error al iniciar sesión con Google:",
+        error
+        );
+
+        let mensaje =
+        "No se pudo iniciar sesión con Google.";
+
+        if (error.code === "auth/popup-closed-by-user") {
+        mensaje =
+            "Cerraste la ventana de Google antes de finalizar.";
+        } else if (error.code === "auth/popup-blocked") {
+        mensaje =
+            "El navegador bloqueó la ventana emergente de Google.";
+        } else if (
+        error.code === "auth/unauthorized-domain"
+        ) {
+        mensaje =
+            "Este dominio no está autorizado en Firebase.";
+        } else if (
+        error.code === "auth/network-request-failed"
+        ) {
+        mensaje = "Comprueba tu conexión a Internet.";
+        }
+
+        alert(mensaje);
     }
 };
 
@@ -115,6 +160,18 @@ return (
         </button>
     </form>
 
+    <div className="login-divider">
+        <span>o continúa con</span>
+    </div>
+
+    <button
+        type="button"
+        className="btn-google"
+        onClick={iniciarSesionConGoogle}
+    >
+        <span className="google-icon">G</span>
+        Continuar con Google
+    </button>
     <NavLink to="/register" className="enlace">
         ¿No tienes cuenta? Regístrate aquí
     </NavLink>
